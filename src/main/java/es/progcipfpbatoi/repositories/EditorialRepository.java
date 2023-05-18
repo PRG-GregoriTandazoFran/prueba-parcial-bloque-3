@@ -16,7 +16,11 @@ public class EditorialRepository {
 
 
     public void save(Editorial editorial) {
-        this.editorialDAO.save( editorial );
+        try {
+            this.editorialDAO.save( editorial );
+        } catch ( DatabaseErrorException e ) {
+            throw new RuntimeException( e );
+        }
     }
 
     public void remove(Editorial editorial) {

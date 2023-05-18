@@ -21,7 +21,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         FileLibroDAO        fileLibroDAO        = new FileLibroDAO();
         FileEditorialDAO    fileEditorialDAO    = new FileEditorialDAO();
-        LibroRepository     libroRepository     = new LibroRepository( fileLibroDAO );
+        LibroRepository     libroRepository     = new LibroRepository( fileLibroDAO, fileEditorialDAO );
         EditorialRepository editorialRepository = new EditorialRepository( fileEditorialDAO );
         PrincipalController principalController = new PrincipalController( libroRepository, editorialRepository );
         // Muestra de la escena principal.

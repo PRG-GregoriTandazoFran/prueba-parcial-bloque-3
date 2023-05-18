@@ -30,8 +30,12 @@ public class PrincipalController implements Initializable {
 
     @FXML
     private void eliminar(MouseEvent event) {
+        if ( listViewLibros.getSelectionModel().getSelectedItem() == null ) {
+            AlertMessages.mostrarAlertError( "Tienes que escoger un libro" );
+        }
         Libro libroSelected = listViewLibros.getSelectionModel().getSelectedItem();
         this.libroRepository.remove( libroSelected );
+        listViewLibros.setItems( getData() );
     }
 
     private ObservableList<Libro> getData() {

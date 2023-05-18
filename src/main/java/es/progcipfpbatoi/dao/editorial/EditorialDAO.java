@@ -8,7 +8,7 @@ import es.progcipfpbatoi.exceptions.NotFoundException;
 import java.util.ArrayList;
 
 public interface EditorialDAO {
-    void save(Editorial editorial);
+    void save(Editorial editorial) throws DatabaseErrorException ;
 
     void remove(Editorial editorial);
 

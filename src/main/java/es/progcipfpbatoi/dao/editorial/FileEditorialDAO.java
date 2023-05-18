@@ -23,8 +23,27 @@ public class FileEditorialDAO implements EditorialDAO {
     }
 
     @Override
-    public void save(Editorial editorial) {
+    public void save(Editorial editorial) throws DatabaseErrorException {
+        try {
+            if ( findByNif( editorial.getNif() ) == null ) {
+                append( editorial );
+            } else {
+                update( editorial );
+            }
+        } catch ( IOException ex ) {
+            throw new DatabaseErrorException( ex.getMessage() );
+        }
+    }
 
+    private void append(Editorial editorial) throws IOException {
+        try ( BufferedWriter bufferedWriter = getWriter( true ) ) {
+            bufferedWriter.write( getRegisterFromEditorial( editorial ) );
+            bufferedWriter.newLine();
+        }
+    }
+
+    private void update(Editorial editorial) {
+        updateOrRemove( editorial, true );
     }
 
     private void updateOrRemove(Editorial editorial, boolean update) {
@@ -54,7 +73,7 @@ public class FileEditorialDAO implements EditorialDAO {
 
     @Override
     public void remove(Editorial editorial) {
-
+        updateOrRemove( editorial, false );
     }
 
     @Override

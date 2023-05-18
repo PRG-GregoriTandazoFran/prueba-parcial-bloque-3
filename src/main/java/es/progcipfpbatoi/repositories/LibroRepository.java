@@ -13,8 +13,9 @@ public class LibroRepository {
     private LibroDAO     libroDAO;
     private EditorialDAO editorialDAO;
 
-    public LibroRepository(LibroDAO libroDAO) {
-        this.libroDAO = libroDAO;
+    public LibroRepository(LibroDAO libroDAO, EditorialDAO editorialDAO) {
+        this.libroDAO     = libroDAO;
+        this.editorialDAO = editorialDAO;
     }
 
     public void save(Libro libro) throws DatabaseErrorException {
