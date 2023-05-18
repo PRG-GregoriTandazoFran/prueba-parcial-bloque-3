@@ -29,6 +29,15 @@ public class LibroRepository {
         return this.libroDAO.findAll();
     }
 
+    public ArrayList<Libro> findAllWithEditoriales() throws DatabaseErrorException {
+        ArrayList<Libro> libroArrayList = libroDAO.findAll();
+        for ( Libro libro : libroArrayList ) {
+            setEditorialtoLibro( libro );
+        }
+        return libroArrayList;
+    }
+
+
     public Libro findByTitle(String title) throws DatabaseErrorException {
         return this.libroDAO.findByTitle( title );
     }
