@@ -13,4 +13,12 @@ public class Editorial {
     public Editorial(String nif) {
         this.nif = nif;
     }
+
+    public String getNif() {
+        return nif;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
 }

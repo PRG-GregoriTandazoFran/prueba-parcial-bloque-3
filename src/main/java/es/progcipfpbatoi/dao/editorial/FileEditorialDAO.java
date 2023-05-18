@@ -1,6 +1,8 @@
 package es.progcipfpbatoi.dao.editorial;
 
 import es.progcipfpbatoi.dto.Editorial;
+import es.progcipfpbatoi.exceptions.DatabaseErrorException;
+import es.progcipfpbatoi.exceptions.NotFoundException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,14 +52,45 @@ public class FileEditorialDAO implements EditorialDAO {
         }
     }
 
+    @Override
+    public Editorial findByNif(String nif) throws DatabaseErrorException {
+        try {
+            return getByNif( nif );
+        } catch ( NotFoundException e ) {
+            return null;
+        }
+    }
+
+    @Override
+    public Editorial getByNif(String nif) throws NotFoundException, DatabaseErrorException {
+        try ( FileReader fileReader = new FileReader( this.file );
+              BufferedReader bufferedReader = new BufferedReader( fileReader ) ) {
+
+            do {
+                String register = bufferedReader.readLine();
+                if ( register == null ) {
+                    throw new NotFoundException( "Editorial no encontrada" );
+                } else if ( !register.isBlank() ) {
+                    Editorial editorial = getEditorialFromRegister( register );
+                    if ( editorial.getNif().equalsIgnoreCase( nif ) ) {
+                        return editorial;
+                    }
+                }
+            } while ( true );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+            throw new DatabaseErrorException( "Ocurrió un error en el acceso a la base de datos" );
+        }
+    }
+
     private BufferedReader getReader() throws IOException {
         return new BufferedReader( new FileReader( file ) );
     }
 
     private Editorial getEditorialFromRegister(String register) {
         String[] fields = register.split( FIELD_SEPARATOR );
-        String   nombre = fields[NIF];
-        String   nif    = fields[NOMBRE];
+        String   nif    = fields[ NIF ];
+        String   nombre = fields[ NOMBRE ];
         return new Editorial( nif, nombre );
     }
 }
