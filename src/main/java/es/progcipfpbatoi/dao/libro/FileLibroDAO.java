@@ -21,8 +21,6 @@ public class FileLibroDAO implements LibroDAO {
     private final static int    TIPO              = 4;
     private final static int    NIVEL_EDUCATIVO   = 5;
 
-    private final static String NO_ACADEMIC = "NO_ACADEMICO";
-
     private static final String FIELD_SEPARATOR = ";";
     public static final  String ACADEMICO       = "ACADEMICO";
     public static final  String NO_ACADEMICO    = "NO_ACADEMICO";
@@ -85,15 +83,15 @@ public class FileLibroDAO implements LibroDAO {
         updateOrRemove( libro, true );
     }
 
-    private void updateOrRemove(Libro tarea, boolean update) {
+    private void updateOrRemove(Libro libro, boolean update) {
         ArrayList<Libro> libroArrayList = findAll();
         try ( BufferedWriter bufferedWriter = getWriter( false ) ) {
             for ( Libro libroItem : libroArrayList ) {
-                if ( !libroItem.equals( tarea ) ) {
+                if ( !libroItem.equals( libro ) ) {
                     bufferedWriter.write( getRegisterFromLibro( libroItem ) );
                     bufferedWriter.newLine();
                 } else if ( update ) {
-                    bufferedWriter.write( getRegisterFromLibro( tarea ) );
+                    bufferedWriter.write( getRegisterFromLibro( libro ) );
                     bufferedWriter.newLine();
                 }
             }
@@ -104,10 +102,11 @@ public class FileLibroDAO implements LibroDAO {
 
     public String getRegisterFromLibro(Libro libro) {
         String register = libro.getTitulo() + FIELD_SEPARATOR + libro.getAutor() + FIELD_SEPARATOR + libro.getFechaPublicacion() + FIELD_SEPARATOR + libro.getEditorial().getNif();
-        if ( libro.getClass().equals( LibroAcademico.class ) ) {
-            return register + FIELD_SEPARATOR + ACADEMICO + FIELD_SEPARATOR + ((LibroAcademico) libro).getNivelEducativo();
+        if ( !(libro.getClass().equals( LibroAcademico.class )) ) {
+            return register + FIELD_SEPARATOR + NO_ACADEMICO;
         }
-        return register + FIELD_SEPARATOR + NO_ACADEMICO;
+        return register + FIELD_SEPARATOR + ACADEMICO + FIELD_SEPARATOR + ((LibroAcademico) libro).getNivelEducativo();
+
     }
 
     private BufferedWriter getWriter(boolean append) throws IOException {
@@ -154,7 +153,7 @@ public class FileLibroDAO implements LibroDAO {
         String    autor     = fields[ AUTOR ];
         LocalDate fecha     = LocalDate.parse( fields[ FECHA_PUBLICACION ], DateTimeFormatter.ofPattern( "yyyy-MM-dd" ) );
         Editorial editorial = new Editorial( fields[ NIF_EDITORIAL ] );
-        if ( fields[ TIPO ].equalsIgnoreCase( NO_ACADEMIC ) ) {
+        if ( fields[ TIPO ].equalsIgnoreCase( NO_ACADEMICO ) ) {
             //NO ACADEMICO
             return new Libro( titulo, autor, fecha, editorial );
         }

@@ -49,24 +49,30 @@ public class NewBookController implements Initializable {
         if ( !isAnyValueInBlank() ) {
 
             try {
-                if ( tipoLibro.getSelectionModel().getSelectedItem().equalsIgnoreCase( "NO_ACADEMICO" ) ) {
+                if ( tipoLibro.getSelectionModel().getSelectedItem().equalsIgnoreCase( "No academico" ) ) {
                     this.libroRepository.save( new Libro( titulo.getText(), autor.getText(), LocalDate.now(), new Editorial( editorial.getSelectionModel().getSelectedItem() ) ) );
                 } else {
                     this.libroRepository.save( new LibroAcademico( titulo.getText(), autor.getText(), LocalDate.now(), new Editorial( editorial.getSelectionModel().getSelectedItem() ), NivelEducativo.parse( nivelAcademico.getSelectionModel().getSelectedItem() ) ) );
                 }
                 AlertMessages.mostrarAlertWarning( "Libro guardado con éxito!" );
+                titulo.setText( "" );
+                autor.setText( "" );
+                tipoLibro.getSelectionModel().clearSelection();
+                nivelAcademico.getSelectionModel().clearSelection();
+                editorial.getSelectionModel().clearSelection();
             } catch ( DatabaseErrorException e ) {
                 throw new RuntimeException( e );
             }
         }
     }
 
+
     private boolean isAnyValueInBlank() {
-        if ( tipoLibro.getSelectionModel().getSelectedItem().isBlank() ) {
+        if ( tipoLibro.getSelectionModel().getSelectedItem() == null ) {
             AlertMessages.mostrarAlertError( "Debes seleccionar un tipo de libro" );
             return true;
         }
-        if ( nivelAcademico.getSelectionModel().getSelectedItem().isBlank() ) {
+        if ( nivelAcademico.getSelectionModel().getSelectedItem() == null ) {
             AlertMessages.mostrarAlertError( "Debes seleccionar un tipo de nivel académico" );
             return true;
         }
@@ -74,13 +80,16 @@ public class NewBookController implements Initializable {
             AlertMessages.mostrarAlertError( "Tiene que tener un titulo" );
             return true;
         }
-        if ( editorial.getSelectionModel().getSelectedItem().isBlank() ) {
+        if ( autor.getText().isBlank() ) {
+            AlertMessages.mostrarAlertError( "Debes poner un autor " );
+            return true;
+        }
+        if ( editorial.getSelectionModel().getSelectedItem() == null ) {
             AlertMessages.mostrarAlertError( "Debes seleccionar una editorial " );
             return true;
         }
         return false;
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

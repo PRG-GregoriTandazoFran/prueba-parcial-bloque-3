@@ -1,4 +1,9 @@
 La venganza del palomo;Mario Picazo;2003-12-01;111A;NO_ACADEMICO
 Retiros compulsivos;Andrea Lowi;2010-03-01;222B;ACADEMICO;BACHILLERATO
 Azote y sus manías;Reynold Charpman;2011-11-03;111A;ACADEMICO;ESO
-padre pobre padre rico;fran;2023-05-18;111A;ACADEMICO;INFANTIL
+comedia infantil;fran;2023-05-18;111A;ACADEMICO;INFANTIL
+matematicas I;fran;2023-05-18;111A;ACADEMICO;ESO
+vivvir la  vdia;fran;2023-05-18;111A;ACADEMICO;INFANTIL
+ordenaodr1;fran;2023-05-18;222B;ACADEMICO;INFANTIL
+rorndiae;fran;2023-05-18;222B;ACADEMICO;INFANTIL
+lo que vi;fran;2023-05-18;222B;NO_ACADEMICO
