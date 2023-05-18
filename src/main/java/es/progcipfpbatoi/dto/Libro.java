@@ -52,6 +52,14 @@ public class Libro {
     public int hashCode() {
         return Objects.hash( titulo );
     }
+
+    @Override
+    public String toString() {
+        return titulo + '\'' +
+                " | " + autor + '\'' +
+                " | " + fechaPublicacion +
+                " | " + editorial;
+    }
 }
 
 

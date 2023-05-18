@@ -18,4 +18,9 @@ public class LibroAcademico extends Libro {
     public NivelEducativo getNivelEducativo() {
         return nivelEducativo;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + " | " + nivelEducativo;
+    }
 }
