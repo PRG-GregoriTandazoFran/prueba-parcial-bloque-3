@@ -1,8 +1,13 @@
 package es.progcipfpbatoi.controlador;
 
+import es.progcipfpbatoi.dto.Editorial;
+import es.progcipfpbatoi.dto.Libro;
+import es.progcipfpbatoi.dto.LibroAcademico;
 import es.progcipfpbatoi.dto.NivelEducativo;
+import es.progcipfpbatoi.exceptions.DatabaseErrorException;
 import es.progcipfpbatoi.repositories.EditorialRepository;
 import es.progcipfpbatoi.repositories.LibroRepository;
+import es.progcipfpbatoi.util.AlertMessages;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +16,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class NewBookController implements Initializable {
@@ -32,14 +38,49 @@ public class NewBookController implements Initializable {
     @FXML
     private ComboBox<String> nivelAcademico;
     @FXML
-    private TextField        nombre;
+    private TextField        titulo;
+    @FXML
+    private TextField        autor;
     @FXML
     private ComboBox<String> editorial;
 
     @FXML
     private void confirmar(ActionEvent event) {
+        if ( !isAnyValueInBlank() ) {
 
+            try {
+                if ( tipoLibro.getSelectionModel().getSelectedItem().equalsIgnoreCase( "NO_ACADEMICO" ) ) {
+                    this.libroRepository.save( new Libro( titulo.getText(), autor.getText(), LocalDate.now(), new Editorial( editorial.getSelectionModel().getSelectedItem() ) ) );
+                } else {
+                    this.libroRepository.save( new LibroAcademico( titulo.getText(), autor.getText(), LocalDate.now(), new Editorial( editorial.getSelectionModel().getSelectedItem() ), NivelEducativo.parse( nivelAcademico.getSelectionModel().getSelectedItem() ) ) );
+                }
+                AlertMessages.mostrarAlertWarning( "Libro guardado con éxito!" );
+            } catch ( DatabaseErrorException e ) {
+                throw new RuntimeException( e );
+            }
+        }
     }
+
+    private boolean isAnyValueInBlank() {
+        if ( tipoLibro.getSelectionModel().getSelectedItem().isBlank() ) {
+            AlertMessages.mostrarAlertError( "Debes seleccionar un tipo de libro" );
+            return true;
+        }
+        if ( nivelAcademico.getSelectionModel().getSelectedItem().isBlank() ) {
+            AlertMessages.mostrarAlertError( "Debes seleccionar un tipo de nivel académico" );
+            return true;
+        }
+        if ( titulo.getText().isBlank() ) {
+            AlertMessages.mostrarAlertError( "Tiene que tener un titulo" );
+            return true;
+        }
+        if ( editorial.getSelectionModel().getSelectedItem().isBlank() ) {
+            AlertMessages.mostrarAlertError( "Debes seleccionar una editorial " );
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

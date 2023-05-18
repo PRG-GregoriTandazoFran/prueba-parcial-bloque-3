@@ -14,7 +14,6 @@ public class EditorialRepository {
         this.editorialDAO = editorialDAO;
     }
 
-
     public void save(Editorial editorial) {
         try {
             this.editorialDAO.save( editorial );

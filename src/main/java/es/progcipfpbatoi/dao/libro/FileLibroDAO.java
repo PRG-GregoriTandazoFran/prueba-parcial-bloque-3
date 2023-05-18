@@ -103,7 +103,7 @@ public class FileLibroDAO implements LibroDAO {
     }
 
     public String getRegisterFromLibro(Libro libro) {
-        String register = libro.getTitulo() + FIELD_SEPARATOR + libro.getAutor() + FIELD_SEPARATOR + libro.getFechaPublicacion() + FIELD_SEPARATOR + libro.getEditorial();
+        String register = libro.getTitulo() + FIELD_SEPARATOR + libro.getAutor() + FIELD_SEPARATOR + libro.getFechaPublicacion() + FIELD_SEPARATOR + libro.getEditorial().getNif();
         if ( libro.getClass().equals( LibroAcademico.class ) ) {
             return register + FIELD_SEPARATOR + ACADEMICO + FIELD_SEPARATOR + ((LibroAcademico) libro).getNivelEducativo();
         }

@@ -51,5 +51,4 @@ public class LibroRepository {
         Editorial editorial = editorialDAO.findByNif( libro.getEditorial().getNif() );
         libro.setEditorial( editorial );
     }
-
 }
