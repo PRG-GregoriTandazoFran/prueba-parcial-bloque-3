@@ -44,7 +44,7 @@ public class NewBookController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tipoLibro.setItems( FXCollections.observableArrayList( "Academico", "No academico" ) );
-        nivelAcademico.setItems( FXCollections.observableArrayList( "1","2" ) );
-        editorial.setItems( FXCollections.observableArrayList( "1", "2" ) );
+        nivelAcademico.setItems( FXCollections.observableArrayList( NivelEducativo.getAllValuesInString() ) );
+        editorial.setItems( FXCollections.observableArrayList( this.editorialRepository.getAllNifs() ) );
     }
 }

@@ -136,4 +136,24 @@ public class FileEditorialDAO implements EditorialDAO {
         String   nombre = fields[ NOMBRE ];
         return new Editorial( nif, nombre );
     }
+
+    public ArrayList<String> getAllNifs() throws DatabaseErrorException {
+        ArrayList<String> allNifsEditorialsarrayList = new ArrayList<>();
+        try ( FileReader fileReader = new FileReader( this.file );
+              BufferedReader bufferedReader = new BufferedReader( fileReader ) ) {
+
+            do {
+                String register = bufferedReader.readLine();
+                if ( register == null ) {
+                    return allNifsEditorialsarrayList;
+                } else if ( !register.isBlank() ) {
+                    Editorial editorial = getEditorialFromRegister( register );
+                    allNifsEditorialsarrayList.add( editorial.getNif() );
+                }
+            } while ( true );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+            throw new DatabaseErrorException( "Ocurrió un error en el acceso a la base de datos" );
+        }
+    }
 }

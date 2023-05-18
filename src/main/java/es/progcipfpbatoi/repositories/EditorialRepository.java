@@ -38,4 +38,12 @@ public class EditorialRepository {
     public Editorial getByNif(String nif) throws NotFoundException, DatabaseErrorException {
         return this.editorialDAO.getByNif( nif );
     }
+
+    public ArrayList<String> getAllNifs() {
+        try {
+            return this.editorialDAO.getAllNifs();
+        } catch ( DatabaseErrorException e ) {
+            throw new RuntimeException( e );
+        }
+    }
 }

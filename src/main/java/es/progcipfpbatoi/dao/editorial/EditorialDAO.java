@@ -8,7 +8,7 @@ import es.progcipfpbatoi.exceptions.NotFoundException;
 import java.util.ArrayList;
 
 public interface EditorialDAO {
-    void save(Editorial editorial) throws DatabaseErrorException ;
+    void save(Editorial editorial) throws DatabaseErrorException;
 
     void remove(Editorial editorial);
 
@@ -17,4 +17,6 @@ public interface EditorialDAO {
     Editorial findByNif(String nif) throws DatabaseErrorException;
 
     Editorial getByNif(String nif) throws NotFoundException, DatabaseErrorException;
+
+    ArrayList<String> getAllNifs() throws DatabaseErrorException;
 }
