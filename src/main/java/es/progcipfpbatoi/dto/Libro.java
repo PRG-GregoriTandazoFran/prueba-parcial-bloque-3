@@ -19,7 +19,6 @@ public class Libro {
         this.fechaPublicacion = fechaPublicacion;
     }
 
-
     public void setEditorial(Editorial editorial) {
         this.editorial = editorial;
     }
