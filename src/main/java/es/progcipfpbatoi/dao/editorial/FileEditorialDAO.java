@@ -1,17 +1,16 @@
 package es.progcipfpbatoi.dao.editorial;
 
 import es.progcipfpbatoi.dto.Editorial;
+import es.progcipfpbatoi.dto.Libro;
+import es.progcipfpbatoi.dto.LibroAcademico;
 import es.progcipfpbatoi.exceptions.DatabaseErrorException;
 import es.progcipfpbatoi.exceptions.NotFoundException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class FileEditorialDAO implements EditorialDAO {
-    private static final String DATABASE_FILE = "resources/database/editorial.txt";
+    private static final String DATABASE_FILE = "resources/database/editoriales.txt";
     private final static int    NIF           = 0;
     private final static int    NOMBRE        = 1;
 
@@ -26,6 +25,31 @@ public class FileEditorialDAO implements EditorialDAO {
     @Override
     public void save(Editorial editorial) {
 
+    }
+
+    private void updateOrRemove(Editorial editorial, boolean update) {
+        ArrayList<Editorial> libroArrayList = findAll();
+        try ( BufferedWriter bufferedWriter = getWriter( false ) ) {
+            for ( Editorial editorialItem : libroArrayList ) {
+                if ( !editorialItem.equals( editorial ) ) {
+                    bufferedWriter.write( getRegisterFromEditorial( editorialItem ) );
+                    bufferedWriter.newLine();
+                } else if ( update ) {
+                    bufferedWriter.write( getRegisterFromEditorial( editorial ) );
+                    bufferedWriter.newLine();
+                }
+            }
+        } catch ( IOException ex ) {
+            ex.printStackTrace();
+        }
+    }
+
+    public String getRegisterFromEditorial(Editorial editorial) {
+        return editorial.getNif() + FIELD_SEPARATOR + editorial.getNombre();
+    }
+
+    private BufferedWriter getWriter(boolean append) throws IOException {
+        return new BufferedWriter( new FileWriter( file, append ) );
     }
 
     @Override
