@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,6 +25,12 @@ public class PrincipalController implements Initializable {
     @FXML
     private ListView<Libro> listViewLibros;
 
+    @FXML
+    private void eliminar(MouseEvent event) {
+        Libro libroSelected = listViewLibros.getSelectionModel().getSelectedItem();
+        this.libroRepository.remove( libroSelected );
+    }
+
     private ObservableList<Libro> getData() {
         try {
             return FXCollections.observableArrayList( libroRepository.findAllWithEditoriales() );
@@ -32,7 +39,6 @@ public class PrincipalController implements Initializable {
             return null;
         }
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
