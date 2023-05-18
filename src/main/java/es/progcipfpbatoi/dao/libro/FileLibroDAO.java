@@ -2,6 +2,7 @@ package es.progcipfpbatoi.dao.libro;
 
 import es.progcipfpbatoi.dto.Editorial;
 import es.progcipfpbatoi.dto.Libro;
+import es.progcipfpbatoi.dto.LibroAcademico;
 import es.progcipfpbatoi.dto.NivelEducativo;
 
 import java.io.BufferedReader;
@@ -65,29 +66,18 @@ public class FileLibroDAO implements LibroDAO {
     }
 
     private Libro getLibroFromRegister(String register) {
-        String[] fields = register.split( FIELD_SEPARATOR );
-        if ( fields[TIPO].equalsIgnoreCase( NO_ACADEMIC ) ) {
+        String[]  fields    = register.split( FIELD_SEPARATOR );
+        String    titulo    = fields[ TITULO ];
+        String    autor     = fields[ AUTOR ];
+        LocalDate fecha     = LocalDate.parse( fields[ FECHA_PUBLICACION ], DateTimeFormatter.ofPattern( "yyyy-MM-dd" ) );
+        Editorial editorial = new Editorial( fields[ NIF_EDITORIAL ] );
+        if ( fields[ TIPO ].equalsIgnoreCase( NO_ACADEMIC ) ) {
             //NO ACADEMICO
-            String    titulo    = fields[TITULO];
-            String    autor     = fields[AUTOR];
-            LocalDate fecha     = LocalDate.parse( fields[FECHA_PUBLICACION], DateTimeFormatter.ofPattern( "yyyy-MM-dd" ) );
-            Editorial editorial = new Editorial( fields[NIF_EDITORIAL] );
             return new Libro( titulo, autor, fecha, editorial );
-        } else {
-            //LIBRO ACADEMICO
-            String         titulo         = fields[TITULO];
-            String         autor          = fields[AUTOR];
-            LocalDate      fecha          = LocalDate.parse( fields[FECHA_PUBLICACION], DateTimeFormatter.ofPattern( "yyyy-MM-dd" ) );
-            Editorial      editorial      = new Editorial( fields[NIF_EDITORIAL] );
-            NivelEducativo nivelEducativo = NivelEducativo.valueOf( fields[NIVEL_EDUCATIVO] );
         }
-return null;
+        //LIBRO ACADEMICO
+        NivelEducativo nivelEducativo = NivelEducativo.parse( fields[ NIVEL_EDUCATIVO ] );
+        return new LibroAcademico( titulo, autor, fecha, editorial, nivelEducativo );
 
-    }
-
-
-    @Override
-    public ArrayList<Libro> findAllAvailables() {
-        return null;
     }
 }

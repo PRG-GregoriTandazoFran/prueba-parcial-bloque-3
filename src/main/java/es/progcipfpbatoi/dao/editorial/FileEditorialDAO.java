@@ -60,9 +60,4 @@ public class FileEditorialDAO implements EditorialDAO {
         String   nif    = fields[NOMBRE];
         return new Editorial( nif, nombre );
     }
-
-    @Override
-    public ArrayList<Editorial> findAllAvailables() {
-        return null;
-    }
 }

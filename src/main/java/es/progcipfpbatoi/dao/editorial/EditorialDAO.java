@@ -10,6 +10,4 @@ public interface EditorialDAO {
     void remove(Editorial editorial);
 
     ArrayList<Editorial> findAll();
-
-    ArrayList<Editorial> findAllAvailables();
 }
