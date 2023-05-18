@@ -36,4 +36,9 @@ public class Editorial {
     public int hashCode() {
         return Objects.hash( nif );
     }
+
+    @Override
+    public String toString() {
+        return nif;
+    }
 }
