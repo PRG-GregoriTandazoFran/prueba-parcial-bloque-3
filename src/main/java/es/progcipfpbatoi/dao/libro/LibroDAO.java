@@ -11,4 +11,8 @@ public interface LibroDAO {
     void remove(Libro libro);
 
     ArrayList<Libro> findAll();
+
+    Libro findByTitle(String title);
+
+    Libro getByTitle(String title);
 }

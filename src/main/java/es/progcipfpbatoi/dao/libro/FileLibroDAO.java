@@ -31,7 +31,23 @@ public class FileLibroDAO implements LibroDAO {
 
     @Override
     public void save(Libro libro) {
+        try {
+            if ( findByTitle( libro.getTitulo() ) == null ) {
+                append( libro );
+            } else {
+                update( libro );
+            }
+        } catch ( IOException ex ) {
+            throw new DatabaseErrorException( ex.getMessage() );
+        }
 
+    }
+
+    private void append(Libro libro) throws IOException {
+        try ( BufferedWriter bufferedWriter = getWriter( true ) ) {
+            bufferedWriter.write( getRegisterFromLibro( libro ) );
+            bufferedWriter.newLine();
+        }
     }
 
     @Override
