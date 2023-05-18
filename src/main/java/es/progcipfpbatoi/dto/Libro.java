@@ -19,6 +19,22 @@ public class Libro {
         this.fechaPublicacion = fechaPublicacion;
     }
 
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public LocalDate getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public Editorial getEditorial() {
+        return editorial;
+    }
+
     public void setEditorial(Editorial editorial) {
         this.editorial = editorial;
     }

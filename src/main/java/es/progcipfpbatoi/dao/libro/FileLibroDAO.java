@@ -4,6 +4,8 @@ import es.progcipfpbatoi.dto.Editorial;
 import es.progcipfpbatoi.dto.Libro;
 import es.progcipfpbatoi.dto.LibroAcademico;
 import es.progcipfpbatoi.dto.NivelEducativo;
+import es.progcipfpbatoi.exceptions.DatabaseErrorException;
+import es.progcipfpbatoi.exceptions.NotFoundException;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -30,7 +32,7 @@ public class FileLibroDAO implements LibroDAO {
     }
 
     @Override
-    public void save(Libro libro) {
+    public void save(Libro libro) throws DatabaseErrorException {
         try {
             if ( findByTitle( libro.getTitulo() ) == null ) {
                 append( libro );
@@ -39,6 +41,28 @@ public class FileLibroDAO implements LibroDAO {
             }
         } catch ( IOException ex ) {
             throw new DatabaseErrorException( ex.getMessage() );
+        }
+
+    }
+
+    public Libro getByTitle(String title) throws NotFoundException, DatabaseErrorException {
+        try ( FileReader fileReader = new FileReader( this.file );
+              BufferedReader bufferedReader = new BufferedReader( fileReader ) ) {
+
+            do {
+                String register = bufferedReader.readLine();
+                if ( register == null ) {
+                    throw new NotFoundException( "Libro no encontrado" );
+                } else if ( !register.isBlank() ) {
+                    Libro libro = getLibroFromRegister( register );
+                    if ( libro.getTitulo().equalsIgnoreCase( title ) ) {
+                        return libro;
+                    }
+                }
+            } while ( true );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+            throw new DatabaseErrorException( "Ocurrió un error en el acceso a la base de datos" );
         }
 
     }
@@ -76,6 +100,14 @@ public class FileLibroDAO implements LibroDAO {
         }
     }
 
+    public String getRegisterFromLibro(Libro libro) {
+        String register = libro.getTitulo() + FIELD_SEPARATOR + libro.getAutor() + FIELD_SEPARATOR + libro.getFechaPublicacion() + FIELD_SEPARATOR + libro.getEditorial();
+        if ( libro.getClass().equals( LibroAcademico.class ) ) {
+            return register + FIELD_SEPARATOR + ((LibroAcademico) libro).getNivelEducativo();
+        }
+        return register;
+    }
+
     private BufferedWriter getWriter(boolean append) throws IOException {
         return new BufferedWriter( new FileWriter( file, append ) );
     }
@@ -98,6 +130,16 @@ public class FileLibroDAO implements LibroDAO {
             System.out.println( ex.getMessage() );
             return null;
         }
+    }
+
+    @Override
+    public Libro findByTitle(String title) throws DatabaseErrorException {
+        try {
+            return getByTitle( title );
+        } catch ( NotFoundException ex ) {
+            return null;
+        }
+
     }
 
     private BufferedReader getReader() throws IOException {

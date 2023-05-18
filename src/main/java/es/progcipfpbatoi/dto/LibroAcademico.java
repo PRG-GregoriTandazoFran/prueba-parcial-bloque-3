@@ -14,4 +14,8 @@ public class LibroAcademico extends Libro {
         super( titulo, autor, fechaPublicacion );
         this.nivelEducativo = nivelEducativo;
     }
+
+    public NivelEducativo getNivelEducativo() {
+        return nivelEducativo;
+    }
 }
