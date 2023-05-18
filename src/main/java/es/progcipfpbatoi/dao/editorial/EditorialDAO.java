@@ -1,7 +1,6 @@
 package es.progcipfpbatoi.dao.editorial;
 
 import es.progcipfpbatoi.dto.Editorial;
-import es.progcipfpbatoi.dto.Libro;
 
 import java.util.ArrayList;
 

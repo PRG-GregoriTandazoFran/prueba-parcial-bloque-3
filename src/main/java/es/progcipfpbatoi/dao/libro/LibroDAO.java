@@ -10,7 +10,7 @@ public interface LibroDAO {
 
     void remove(Libro libro);
 
-    ArrayList<Editorial> findAll();
+    ArrayList<Libro> findAll();
 
-    ArrayList<Editorial> findAllAvailables();
+    ArrayList<Libro> findAllAvailables();
 }

@@ -9,4 +9,8 @@ public class Editorial {
         this.nif    = nif;
         this.nombre = nombre;
     }
+
+    public Editorial(String nif) {
+        this.nif = nif;
+    }
 }
