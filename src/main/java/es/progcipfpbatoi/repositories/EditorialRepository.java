@@ -24,7 +24,7 @@ public class EditorialRepository {
     }
 
     public void remove(Editorial editorial) {
-        this.remove( editorial );
+        this.editorialDAO.remove( editorial );
     }
 
     public ArrayList<Editorial> findAll() {
