@@ -24,6 +24,8 @@ public class FileLibroDAO implements LibroDAO {
     private final static String NO_ACADEMIC = "NO_ACADEMICO";
 
     private static final String FIELD_SEPARATOR = ";";
+    public static final  String ACADEMICO       = "ACADEMICO";
+    public static final  String NO_ACADEMICO    = "NO_ACADEMICO";
 
     private File file;
 
@@ -103,9 +105,9 @@ public class FileLibroDAO implements LibroDAO {
     public String getRegisterFromLibro(Libro libro) {
         String register = libro.getTitulo() + FIELD_SEPARATOR + libro.getAutor() + FIELD_SEPARATOR + libro.getFechaPublicacion() + FIELD_SEPARATOR + libro.getEditorial();
         if ( libro.getClass().equals( LibroAcademico.class ) ) {
-            return register + FIELD_SEPARATOR + "ACADEMICO" + FIELD_SEPARATOR + ((LibroAcademico) libro).getNivelEducativo();
+            return register + FIELD_SEPARATOR + ACADEMICO + FIELD_SEPARATOR + ((LibroAcademico) libro).getNivelEducativo();
         }
-        return register + FIELD_SEPARATOR + "NO_ACADEMICO";
+        return register + FIELD_SEPARATOR + NO_ACADEMICO;
     }
 
     private BufferedWriter getWriter(boolean append) throws IOException {
