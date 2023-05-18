@@ -5,10 +5,7 @@ import es.progcipfpbatoi.dto.Libro;
 import es.progcipfpbatoi.dto.LibroAcademico;
 import es.progcipfpbatoi.dto.NivelEducativo;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,8 +36,34 @@ public class FileLibroDAO implements LibroDAO {
 
     @Override
     public void remove(Libro libro) {
-
+        updateOrRemove( libro, false );
     }
+
+    private void update(Libro libro) {
+        updateOrRemove( libro, true );
+    }
+
+    private void updateOrRemove(Libro tarea, boolean update) {
+        ArrayList<Libro> libroArrayList = findAll();
+        try ( BufferedWriter bufferedWriter = getWriter( false ) ) {
+            for ( Libro libroItem : libroArrayList ) {
+                if ( !libroItem.equals( tarea ) ) {
+                    bufferedWriter.write( getRegisterFromLibro( libroItem ) );
+                    bufferedWriter.newLine();
+                } else if ( update ) {
+                    bufferedWriter.write( getRegisterFromLibro( tarea ) );
+                    bufferedWriter.newLine();
+                }
+            }
+        } catch ( IOException ex ) {
+            ex.printStackTrace();
+        }
+    }
+
+    private BufferedWriter getWriter(boolean append) throws IOException {
+        return new BufferedWriter( new FileWriter( file, append ) );
+    }
+
 
     @Override
     public ArrayList<Libro> findAll() {
@@ -78,6 +101,5 @@ public class FileLibroDAO implements LibroDAO {
         //LIBRO ACADEMICO
         NivelEducativo nivelEducativo = NivelEducativo.parse( fields[ NIVEL_EDUCATIVO ] );
         return new LibroAcademico( titulo, autor, fecha, editorial, nivelEducativo );
-
     }
 }
